@@ -73,15 +73,29 @@ GEN2-ROBOT   EAP225, WPA2-PSK (AES)           <- Jetson이 붙음
 ## 4. Hardware used
 
 - Raspberry Pi 4
-- TP-Link EAP225-Outdoor
+- **TP-Link EAP225-Outdoor** (Omada)
 - Jetson Orin Nano
 - 지상국 노트북
 - Ethernet 케이블 (Pi `eth0` ↔ EAP225)
 - 각 장비 전원
+- 2020 알루미늄 프로파일 (지지대) + 브라켓
 
 선택:
 
 - Android 폰 (USB 테더링용, [아래](#optional-internet-through-android-usb-tethering) 참고)
+
+### 지지대 & 브라켓
+
+![Pi와 EAP225를 2020 프로파일에 고정한 모습](docs/images/ap-mount-collage.jpg)
+
+Pi 4와 TP-Link EAP225-Outdoor를 2020 프로파일 하나에 같이 세워서 쓴다. 안테나가 위로 올라오게 세우고, Pi는 AP 바로 옆 프로파일에 붙인다.
+
+- 2020 프로파일 지지대와 브라켓 모델은 [Onshape 문서](https://cad.onshape.com/documents/eb8f1ae66d872a8dc34ad04b/w/f149fbaa85f6e4b3bb27186b/e/26e3c731a53e620f67562c44?renderMode=0&uiState=6ac2860149432b68a5bfc669)에서 받아서 쓰면 된다.
+- 왼쪽 사진은 전체 모습이다. 프로파일을 세우고 위쪽에 EAP225, 그 옆에 Pi 4를 붙여준다.
+- 오른쪽 사진은 옆에서 본 모습이다. EAP225는 브라켓에 끼워서 프로파일에 고정해준다.
+- Pi와 EAP225를 잇는 Ethernet 케이블은 남는 길이를 둥글게 말아서 케이블타이로 프로파일에 묶어준다.
+- 케이블이 늘어지면 커넥터에 힘이 걸리니까, 묶을 때는 `eth0` 쪽 커넥터에 장력이 안 걸리게 해준다.
+- 다 고정했으면 Pi와 EAP225 전원을 넣고, 아래 Step 1부터 입력하자.
 
 ## 5. How I built it
 
@@ -500,6 +514,7 @@ Step 1 백업으로 돌립니다. 새로 만든 프로필은 이름으로 지웁
 GEN2-GCS-Network/
 ├── README.md
 ├── docs/
+│   ├── images/                 # 장비 설치 사진
 │   ├── full-setup.md           # 전체 절차 (통과 조건, 되돌리기, 인터넷 공유 포함)
 │   ├── troubleshooting.md      # 증상 표 + 로그 확인 명령
 │   ├── ros2-test.md            # ROS 2 확인 + 성능 측정
