@@ -11,9 +11,9 @@ sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80
 
 | Symptom | What caused it for me | What I did |
 | --- | --- | --- |
-| `GEN2-GCS`가 안 뜸. 로그에 `secrets are required` / `no-secrets` | 프로필에 `psk=`가 저장되지 않음 | README Step 4의 `read -s` 명령으로 비밀번호와 `psk-flags 0` 저장. `sudo grep -c '^psk=' /etc/NetworkManager/system-connections/GEN2-GCS.nmconnection`이 1인지 확인 |
+| `GEN2-GCS`가 안 뜸. 로그에 `secrets are required` / `no-secrets` | 프로필에 `psk=`가 저장되지 않음 | [full-setup.md](full-setup.md) Step 4의 `read -s` 명령으로 비밀번호와 `psk-flags 0` 저장. `sudo grep -c '^psk=' /etc/NetworkManager/system-connections/GEN2-GCS.nmconnection`이 1인지 확인 |
 | `dnsmasq failed to start`, `Address already in use` | NM shared 모드 dnsmasq와 다른 dnsmasq가 같은 포트를 잡음, 또는 shared 프로필 두 개가 192.168.50.1을 가짐 | `robot-br`를 `ipv4.method manual`로. `pgrep -a dnsmasq`가 `/usr/sbin/dnsmasq -x /run/dnsmasq/…` 한 줄이어야 함 |
-| `eth0`를 브리지에 넣자 EAP가 192.168.0.254에서 사라짐 | EAP가 DHCP 모드라 dnsmasq에서 .100–.200 주소를 받아 감 | `cat /var/lib/misc/dnsmasq.leases`에서 찾기. README Step 6의 MAC 예약 + 고정 IP |
+| `eth0`를 브리지에 넣자 EAP가 192.168.0.254에서 사라짐 | EAP가 DHCP 모드라 dnsmasq에서 .100–.200 주소를 받아 감 | `cat /var/lib/misc/dnsmasq.leases`에서 찾기. [full-setup.md](full-setup.md) Step 6의 MAC 예약 + 고정 IP |
 | 재부팅 후 `eth0`가 브리지가 아니라 DHCP 클라이언트로 뜸 | `interface-name`이 빈 `netplan-eth0`가 `eth0`를 잡음 | `netplan-eth0` 자동연결 끄기, `robot-eth` 우선순위 10 확인 |
 | Wi-Fi 클라이언트 ping이 50–200 ms로 튐 | 클라이언트(Jetson, 노트북) Wi-Fi 절전 | Jetson: `802-11-wireless.powersave 2`. Linux 노트북도 동일. Pi AP 쪽은 해당 없음 |
 | 노트북이 "인터넷 연결 없음" | 폰 테더링이 없거나, 게이트웨이 없이 받은 예전 DHCP 임대 | LAN은 정상. 폰 연결 후 노트북 Wi-Fi를 껐다 켜기 |
@@ -36,5 +36,5 @@ sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80
 ## EAP225에 접속이 안 될 때
 
 - 먼저 `cat /var/lib/misc/dnsmasq.leases | grep -i eap`로 지금 주소를 확인합니다.
-- 그래도 `192.168.0.254`에 남아 있다면 README Step 6의 임시 주소 + SSH 터널 방법을 씁니다.
+- 그래도 `192.168.0.254`에 남아 있다면 [full-setup.md](full-setup.md) Step 6의 임시 주소 + SSH 터널 방법을 씁니다.
 - 최후의 수단은 EAP 리셋 버튼입니다. 공장 초기화되면 DHCP 모드로 돌아가고, MAC 예약이 있으면 `.2`를 받습니다.

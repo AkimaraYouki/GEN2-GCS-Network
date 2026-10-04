@@ -1,5 +1,7 @@
 GEN2 · Ground Station · Raspberry Pi 4
 
+> 공개 저장소용으로 EAP225의 실제 MAC 주소만 `aa:bb:cc:dd:ee:ff` 예시 값으로 바꿨습니다. 그 외에는 원본 그대로입니다.
+
 # GEN2 GCS 네트워크 구축 런북
 
 라즈베리파이 4 한 대로 지상국 Wi-Fi(GEN2-GCS), EAP225 로봇 AP, Jetson을 하나의 192.168.50.0/24 LAN으로 묶고, 안드로이드 USB 테더링이 꽂혀 있을 때만 인터넷을 공유하는 구성입니다. 위에서부터 순서대로 실행하면 됩니다. 각 단계의 통과 조건을 확인한 뒤 다음 단계로 넘어가세요.
@@ -364,14 +366,14 @@ cat /var/lib/misc/dnsmasq.leases | grep -i eap
 기대 결과 (예시)
 
 ```
-1791167945 ec:b9:31:5f:3b:d6 192.168.50.200 EAP225-Outdoor-EC-B9-31-5F-3B-D6 01:ec:b9:31:5f:3b:d6
+1791167945 aa:bb:cc:dd:ee:ff 192.168.50.200 EAP225-Outdoor-AA-BB-CC-DD-EE-FF 01:aa:bb:cc:dd:ee:ff
            └ MAC 주소          └ 지금 주소
 ```
 
 Pi · 192.168.50.2 예약
 
 ```
-EAP_MAC='ec:b9:31:5f:3b:d6'   # 위 leases 출력의 MAC으로 바꾸기
+EAP_MAC='aa:bb:cc:dd:ee:ff'   # 위 leases 출력의 MAC으로 바꾸기
 printf '%s\n' '# Reserved: EAP225-Outdoor management' "dhcp-host=$EAP_MAC,192.168.50.2,eap225" \
   | sudo tee -a /etc/dnsmasq.d/gcs-lan.conf
 sudo dnsmasq --test -C /dev/null -7 /etc/dnsmasq.d && sudo systemctl restart dnsmasq
