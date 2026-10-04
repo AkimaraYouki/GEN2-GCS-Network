@@ -1,3 +1,12 @@
+> [!WARNING]
+> This document describes an earlier GEN2 network architecture where the Raspberry Pi provided the GEN2-GCS Wi-Fi AP and bridged wlan0 to eth0.
+>
+> This architecture is no longer used.
+>
+> See the current README and `docs/full-setup.md` for the final EAP225-centered design.
+>
+> 아래 내용은 **사용하지 않는 이전 구성**입니다. 디버깅 경험(문제 해결 표 등)을 남기려고 보관만 합니다. 이 문서의 명령어를 따라 하지 마세요.
+
 GEN2 · Ground Station · Raspberry Pi 4
 
 > 공개 저장소용으로 EAP225의 실제 MAC 주소만 `aa:bb:cc:dd:ee:ff` 예시 값으로 바꿨습니다. 그 외에는 원본 그대로입니다.
