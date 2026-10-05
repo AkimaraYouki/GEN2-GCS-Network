@@ -25,6 +25,8 @@ sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80
 | EAP가 `192.168.0.254`에서 사라짐 | EAP가 DHCP 모드라 Pi가 `192.168.50.0/24` DHCP를 시작하자 dnsmasq에서 `.100–.200` 주소를 받아 감 | `cat /var/lib/misc/dnsmasq.leases`에서 찾기. [full-setup.md](full-setup.md) Step 4의 MAC 예약 + 고정 IP |
 | 재부팅 후 `eth0`가 `192.168.50.1`이 아니라 DHCP 클라이언트로 뜸 | `interface-name`이 빈 `netplan-eth0`가 `eth0`를 잡음 (이전 구성에서 겪음. 같은 원인이 지금 구성에도 적용됨) | `netplan-eth0` 자동연결 끄기, `gcs-lan` 우선순위 10 확인 |
 | Wi-Fi 클라이언트 ping이 50–200 ms로 튐 | 클라이언트(Jetson, 노트북) Wi-Fi 절전 | Jetson: `802-11-wireless.powersave 2`. Linux 노트북도 동일 |
+| 절전을 끄는 conf.d 파일을 넣었는데 재부팅하면 다시 켜짐 (ping 중앙 52 ms, 최대 302 ms) | NetworkManager는 conf.d를 이름순으로 읽고 나중 파일이 이김. `99-…-off.conf`가 패키지 파일 `default-wifi-powersave-on.conf`보다 앞이라 짐 | 파일 이름을 `zz-…`로 바꾸거나, 연결 프로필에 `powersave 2`. `NetworkManager --print-config \| grep powersave`가 `=2`인지 확인 ([측정](measurements/2026-10-05-latency.md)) |
+| 절전을 꺼도 15초마다 수십~백 ms씩 튐 | GNOME 설정 앱의 Wi-Fi 화면이 열려 있으면 15초마다 전 채널 스캔 (한 번에 4~5초) | 설정 앱을 닫음. `iw event -t`에 `scan started`가 주기적으로 찍히는지로 확인 |
 
 ## 증상별 확인
 
@@ -85,9 +87,11 @@ Netmask: 255.255.255.0
 
 ### High latency / ping spikes
 
-- Jetson Wi-Fi 절전 (`iw dev <if> get power_save`가 `off`인지)
+- Jetson Wi-Fi 절전 (`iw dev <if> get power_save`가 `off`인지, `NetworkManager --print-config | grep powersave`가 `=2`인지)
 - 노트북 Wi-Fi 절전
-- RSSI (EAP와 거리)
+- 주기적인 Wi-Fi 스캔 (`iw event -t`). 설정 앱 Wi-Fi 화면·네트워크 선택 창이 열려 있으면 생김
+- RSSI (EAP와 거리). AP가 받은 신호는 EAP225 SSH → `enable` → `show station info`
+- 구간 가르기: Pi(`.1`)와 Jetson을 동시에 ping해서 Pi는 빠르고 Jetson만 느리면 EAP → Jetson 구간
 - 채널 혼잡
 
 ### 노트북이 "인터넷 연결 없음"

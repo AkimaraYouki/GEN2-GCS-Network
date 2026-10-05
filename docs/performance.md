@@ -1,6 +1,6 @@
 # 성능 측정
 
-**아직 측정값을 채우지 못했습니다.** 측정하지 않은 값은 임의로 채우지 않습니다. 이전 구성에서 Pi ↔ EAP(유선) ping이 0.2–0.6 ms였다는 기록만 있습니다.
+첫 측정(2026-10-05, AP 가까이)은 [measurements/2026-10-05-latency.md](measurements/2026-10-05-latency.md)에 있습니다. 아래 기록표의 지연·손실은 그 값이고, 처리량·지터·ROS 2 topic loss·거리별 값은 아직 재지 않았습니다. 측정하지 않은 값은 임의로 채우지 않습니다. 이전 구성에서 Pi ↔ EAP(유선) ping이 0.2–0.6 ms였다는 기록도 있습니다.
 
 ## 어디를 재나
 
@@ -58,7 +58,7 @@ iperf3 -c 192.168.50.10 -t 10 -R           # TCP 다운로드
 iperf3 -c 192.168.50.10 -u -b 20M -t 10    # UDP: Jitter, Lost/Total 확인
 ```
 
-무선 클라이언트에서 max RTT가 100 ms를 넘게 튀면 대부분 클라이언트 Wi-Fi 절전 때문이었습니다 (Jetson 설정 [full-setup.md](full-setup.md) Step 5).
+무선 클라이언트에서 max RTT가 100 ms를 넘게 튀면 대부분 클라이언트 Wi-Fi 절전 때문이었습니다 (Jetson 설정 [full-setup.md](full-setup.md) Step 5). 절전을 껐는데도 수십~백 ms가 주기적으로 튀면 Wi-Fi 스캔을 의심하세요 (`iw event -t`, [2026-10-05 측정](measurements/2026-10-05-latency.md)).
 
 ## 기록표
 
@@ -66,8 +66,10 @@ iperf3 -c 192.168.50.10 -u -b 20M -t 10    # UDP: Jitter, Lost/Total 확인
 
 | 구간 | min RTT | avg RTT | p95 RTT | max RTT | 손실 | 지터 (UDP) | TCP ↑ / ↓ | ROS 2 topic loss |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 노트북 ↔ EAP / Pi | — | — | — | — | — | — | — | — |
-| 노트북 ↔ Jetson | — | — | — | — | — | — | — | — |
+| 노트북 ↔ EAP / Pi | 1.7 ms | 3.1 ms | 6.9 ms | 13.6 ms | 0 % | — | — | — |
+| 노트북 ↔ Jetson | 2.8 ms | 4.3 ms | 6.3 ms | 12.4 ms | 0 % | — | — | — |
+
+위 두 줄은 2026-10-05 22:21, 지상국 PC(2.4 GHz)와 Jetson(5 GHz)이 AP 가까이 있을 때 0.2초 간격 150회입니다. 고치기 전 노트북 ↔ Jetson은 avg 55.9 ms, p95 123.0 ms, max 302.0 ms였습니다 ([상세](measurements/2026-10-05-latency.md)).
 
 거리별 (노트북 ↔ Jetson):
 

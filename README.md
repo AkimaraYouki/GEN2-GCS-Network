@@ -106,7 +106,7 @@ Pi에 [scripts/gcs-netcheck.sh](scripts/gcs-netcheck.sh)를 복사해서 돌리�
 sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80
 ```
 
-성능 측정은 [docs/performance.md](docs/performance.md)에 방법만 있고, 측정값은 아직 비어 있음.
+성능 측정 방법은 [docs/performance.md](docs/performance.md)에 있음. 첫 측정(지연·전파 세기, AP 가까이)과 그때 찾은 문제 두 가지(절전 설정이 안 먹던 것, 설정 앱의 주기 스캔)는 [docs/measurements/2026-10-05-latency.md](docs/measurements/2026-10-05-latency.md)에 정리함. 거리별·처리량·ROS 2 측정은 아직.
 
 ## 6. 선택사항: USB 테더링
 

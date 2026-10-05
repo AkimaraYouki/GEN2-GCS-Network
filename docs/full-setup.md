@@ -262,7 +262,7 @@ iw dev $IF get power_save      # Power save: off
 
 비밀번호는 채팅이나 공유 문서에 붙여넣지 마세요. `read -s`로 터미널에서 직접 입력합니다.
 
-**통과 조건:** `iw dev $IF get power_save`가 `off`이고, Pi에서 `ping -c 3 192.168.50.10`이 됩니다.
+**통과 조건:** `iw dev $IF get power_save`가 `off`이고, Pi에서 `ping -c 3 192.168.50.10`이 됩니다. 실제로 쓰는 프로필의 값도 확인하세요: `nmcli -g 802-11-wireless.powersave connection show GEN2-ROBOT`가 `disable`(2)이어야 합니다. `default`면 전역 설정을 따르는데, Ubuntu 기본값은 켜짐입니다 ([2026-10-05 측정](measurements/2026-10-05-latency.md)).
 
 **되돌리기:** `sudo nmcli connection delete GEN2-ROBOT` (Jetson에서 새로 만든 프로필일 때)
 
