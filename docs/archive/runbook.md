@@ -183,7 +183,7 @@ cat /var/lib/misc/dnsmasq.leases | grep -i eap
 #                └ MAC 주소             └ 지금 주소
 ```
 
-설정이 풀려도 같은 주소를 받도록 dnsmasq에 MAC 예약을 검. MAC은 위 출력의 값으로 바꿀 것.
+설정이 풀려도 같은 주소를 받도록 dnsmasq에 MAC 예약을 걸어 둠. MAC은 위 출력의 값으로 바꿀 것.
 
 ```bash
 EAP_MAC='aa:bb:cc:dd:ee:ff'   # 위 leases 출력의 MAC으로 바꾸기
