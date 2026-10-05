@@ -14,7 +14,7 @@ Raspberry Pi 4는 EAP225에 이더넷으로 연결되어 `192.168.50.1`을 사�
 
 
 ---
-![EAP225-Outdoor & Raspberry Pi 4](images/eap225-pi4.jpg)
+<img src="images/eap225-pi4.jpg" alt="EAP225-Outdoor & Raspberry Pi 4" width="400">
 
 ## 1. 구축한 구조
 
