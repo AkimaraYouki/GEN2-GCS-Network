@@ -41,7 +41,10 @@ flowchart TD
 
 ## 3. 최종 네트워크 설정
 
-나의 세팅이니 SSID와 IP는 필요에 맞게 수정해서 쓰자.
+> [!IMPORTANT]
+> **SSID(`GEN2-ROBOT`)와 IP(`192.168.50.x`)는 내 세팅의 예시 값일 뿐임. 그대로 쓰지 말고 각자 다르게 정해서 쓸 것.**
+> 같은 SSID나 같은 대역을 쓰는 다른 장비/팀과 섞이면 혼선이 생김. 바꿀 때는 아래를 **전부** 같은 값으로 맞출 것: EAP 설정(SSID, IP, Gateway), Pi `eth0` 프로필, dnsmasq(`interface`, `dhcp-range`, `router`, `dhcp-host`), nftables(`saddr`), Jetson 프로필(SSID, IP, Gateway), `scripts/gcs-netcheck.sh` 상단 변수, 문서의 모든 예시.
+
 
 | 장비 | 주소 | 역할 |
 | --- | --- | --- |

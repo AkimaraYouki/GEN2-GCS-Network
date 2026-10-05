@@ -18,6 +18,10 @@ flowchart TD
 
 > **이 문서의 명령어에 대해.** Wi-Fi/EAP/Jetson/dnsmasq/백업/점검 스크립트 명령은 이전 구성(브리지 방식)에서 검증한 런북 기준임. `eth0`에 IP를 직접 주는 프로필(Step 2)과 nftables의 LAN 쪽 인터페이스(`eth0`)는 새 구성에 맞게 바꾼 부분임. 새 구성의 실측 결과는 아직 기록하지 않았음.
 
+> [!IMPORTANT]
+> **SSID(`GEN2-ROBOT`)와 IP(`192.168.50.x`)는 내 세팅의 예시 값일 뿐임. 그대로 쓰지 말고 각자 다르게 정해서 쓸 것.**
+> 같은 SSID나 같은 대역을 쓰는 다른 장비/팀과 섞이면 혼선이 생김. 바꿀 때는 아래를 **전부** 같은 값으로 맞출 것: EAP 설정(SSID, IP, Gateway), Pi `eth0` 프로필, dnsmasq(`interface`, `dhcp-range`, `router`, `dhcp-host`), nftables(`saddr`), Jetson 프로필(SSID, IP, Gateway), `scripts/gcs-netcheck.sh` 상단 변수, 문서의 모든 예시.
+
 ---
 
 ## Step 1. 현재 네트워크 확인 & 백업

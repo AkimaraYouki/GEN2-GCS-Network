@@ -2,6 +2,8 @@
 
 브리지 없이 `eth0`가 LAN 주소 `192.168.50.1/24`를 직접 가집니다. 프로필 이름은 Pi마다 다를 수 있어서, 이 저장소에서는 새로 만드는 프로필에 `gcs-lan`이라는 이름을 씁니다.
 
+> **`192.168.50.1/24`는 예시 값임.** 각자 다른 주소/대역을 정해서 쓰고, EAP·dnsmasq·nftables·Jetson 설정도 같은 대역으로 맞출 것.
+
 ```bash
 sudo nmcli connection add type ethernet con-name gcs-lan ifname eth0 \
   ipv4.method manual ipv4.addresses 192.168.50.1/24 ipv4.never-default yes \
