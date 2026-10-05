@@ -189,7 +189,7 @@ cat /var/lib/misc/dnsmasq.leases | grep -i eap
 #                └ MAC 주소             └ 지금 주소
 ```
 
-설정이 풀려도 같은 주소를 받도록 dnsmasq에 MAC 예약을 겁니다. MAC은 위 출력의 값으로 바꾸세요.
+**EAP의 정식 주소는 EAP 웹 UI에서 설정하는 고정 IP(`192.168.50.2`)입니다.** dnsmasq MAC 예약은 처음에 EAP를 찾아서 설정하는 동안 쓰는 임시 수단이고, 나중에 고정 설정이 풀렸을 때도 같은 주소를 받게 해 주는 안전장치입니다. MAC은 위 출력의 값으로 바꾸세요.
 
 ```bash
 EAP_MAC='aa:bb:cc:dd:ee:ff'   # 위 leases 출력의 MAC으로 바꾸기
@@ -208,8 +208,8 @@ EAP 웹 UI 설정:
 | Gateway / DNS | `192.168.50.1` / `8.8.8.8` (Pi는 DNS를 제공하지 않음) |
 | SSID | `GEN2-ROBOT`, WPA2-PSK (AES) |
 | Client Isolation | **OFF** |
-| Portal | **OFF** |
-| VLAN / Management VLAN | **OFF** |
+| Guest Network / Portal | **OFF** |
+| VLAN / Management VLAN (VLAN isolation 포함) | **OFF** |
 | 멀티캐스트 필터 계열 옵션 | 있다면 **OFF** (ROS 2 디스커버리가 멀티캐스트를 씀) |
 
 중요한 조건은 하나입니다. **노트북과 Jetson이 EAP를 통해 서로 직접 통신할 수 있어야 합니다.** 그래서 Client Isolation, VLAN, 멀티캐스트 필터를 끕니다. SSID는 `GEN2-ROBOT` 하나만 만듭니다.

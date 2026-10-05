@@ -52,6 +52,19 @@ ip -br addr show eth0
 - `:67`을 듣는 프로세스가 dnsmasq 하나여야 합니다.
 - 노트북이 `GEN2-ROBOT`에 붙어 있는지 확인합니다.
 
+### Pi의 DHCP가 죽었을 때
+
+Jetson과 EAP225는 고정 IP라서 Pi의 DHCP가 죽어도 그 주소 자체는 유지됩니다. 반대로 DHCP로 주소를 받는 노트북 같은 새 클라이언트는 주소를 받지 못합니다.
+
+현장에서 바로 복구할 수 있게 노트북에 static fallback 설정을 미리 만들어 둡니다. DHCP 대역(`.100`–`.200`) 밖의 주소를 씁니다.
+
+```
+IP:      192.168.50.20
+Netmask: 255.255.255.0
+```
+
+이 주소로 `GEN2-ROBOT`에 붙으면 Jetson(`.10`), EAP(`.2`), Pi(`.1`)와 통신할 수 있습니다. 평소에는 DHCP로 두고, DHCP가 안 될 때만 이 설정으로 바꿉니다. (`.20`은 예시이고, 본인 대역에서 고정 장비와 겹치지 않는 주소를 쓰세요.)
+
 ### Laptop and Jetson cannot communicate
 
 - 둘 다 `GEN2-ROBOT`에 붙어 있는지

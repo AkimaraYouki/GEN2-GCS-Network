@@ -83,7 +83,7 @@ flowchart TD
 | 1 | 현재 네트워크 확인 + 백업 | 바꾸기 전에 읽기만 함. `scripts/backup-network.sh`로 백업. |
 | 2 | Pi `eth0`에 `192.168.50.1/24` 주기 | 수동 IP, 기본 경로 없음. SSH 경고, 3분 자동 롤백. |
 | 3 | DHCP 설정 (dnsmasq) | DHCP는 dnsmasq 하나만, `interface=eth0`. NM `shared` 모드는 쓰지 않음. |
-| 4 | EAP225 설정 | `192.168.50.2` 고정, SSID `GEN2-ROBOT`, Client Isolation / Portal / VLAN 모두 OFF. |
+| 4 | EAP225 설정 | `192.168.50.2` 고정, SSID `GEN2-ROBOT`, Client Isolation / Guest·Portal / VLAN 모두 OFF. |
 | 5 | Jetson 설정 | `GEN2-ROBOT`에 `192.168.50.10` 고정, Wi-Fi 절전 끔. |
 | 6 | 노트북 접속 + 검증 | 노트북도 `GEN2-ROBOT`. `.1`, `.2`, `.10` ping, Jetson SSH, ROS 2 ([docs/ros2-test.md](docs/ros2-test.md)). |
 | 7 | 점검 스크립트 + 재부팅 테스트 | `gcs-netcheck.sh`가 `ALL OK`. |
