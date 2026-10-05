@@ -3,17 +3,39 @@
 >
 > This architecture is no longer used.
 >
-> See the current README and `docs/full-setup.md` for the final EAP225-centered design.
->
-> 아래 내용은 **사용하지 않는 이전 구성**입니다. 디버깅 경험(문제 해결 표 등)을 남기려고 보관만 합니다. 이 문서의 명령어를 따라 하지 마세요.
+> See the current [README](../../README.md) and [docs/full-setup.md](../full-setup.md) for the final EAP225-centered design.
+
+# 이전 구성 보관용 (사용하지 않음)
+
+아래 런북은 **사용하지 않는 이전 구성**. 디버깅 경험(문제 해결 표 등)을 남기려고 보관만 함. **이 문서의 명령어는 따라 하지 말 것.**
+
+## 현재 구성과 뭐가 다른가
+
+| | 이전 구성 (이 문서) | 현재 구성 |
+| --- | --- | --- |
+| 노트북이 붙는 곳 | Pi `wlan0`의 `GEN2-GCS` | EAP225의 `GEN2-ROBOT` |
+| Jetson이 붙는 곳 | EAP225의 `GEN2-ROBOT` | EAP225의 `GEN2-ROBOT` (같은 SSID) |
+| Pi 역할 | Wi-Fi AP + 브리지 + DHCP | DHCP + 관리 (+ 선택 인터넷 공유) |
+| Pi 네트워크 | `br0 = 192.168.50.1`, `wlan0`/`eth0`는 브리지 포트 | `eth0 = 192.168.50.1/24`, 브리지 없음 |
+| dnsmasq | `interface=br0` | `interface=eth0` |
+| NAT 입력 인터페이스 | `br0` | `eth0` |
+| 노트북 ↔ Jetson 경로 | 노트북 → Pi Wi-Fi → Pi 브리지 → EAP → Jetson | 노트북 → EAP → Jetson |
+
+이전 구성은 지상국 쪽과 로봇 쪽 무선 네트워크를 따로 만든 셈이라 필요 이상으로 복잡해서 현재 구성으로 바꿈.
+
+이전 구성에서 만든 프로필(`GEN2-GCS`, `robot-br`, `robot-eth`)이 Pi에 남아 있으면 지우지 말고 `connection.autoconnect no`로만 끌 것. ([docs/full-setup.md](../full-setup.md) Step 2)
+
+현재 구성에도 그대로 적용되는 문제(`Address already in use`, EAP 주소 변경, `netplan-eth0` 가로채기, Wi-Fi 절전 지터)는 [troubleshooting.md](../troubleshooting.md)에 새 구성 기준으로 옮겨 놓음.
+
+> 공개 저장소용으로 EAP225의 실제 MAC 주소만 `aa:bb:cc:dd:ee:ff` 예시 값으로 바꿨음. 그 외 아래 본문은 원본 그대로.
+
+---
 
 GEN2 · Ground Station · Raspberry Pi 4
 
-> 공개 저장소용으로 EAP225의 실제 MAC 주소만 `aa:bb:cc:dd:ee:ff` 예시 값으로 바꿨습니다. 그 외에는 원본 그대로입니다.
+# [이전 구성] GEN2 GCS 네트워크 구축 런북 (브리지 방식)
 
-# GEN2 GCS 네트워크 구축 런북
-
-라즈베리파이 4 한 대로 지상국 Wi-Fi(GEN2-GCS), EAP225 로봇 AP, Jetson을 하나의 192.168.50.0/24 LAN으로 묶고, 안드로이드 USB 테더링이 꽂혀 있을 때만 인터넷을 공유하는 구성입니다. 위에서부터 순서대로 실행하면 됩니다. 각 단계의 통과 조건을 확인한 뒤 다음 단계로 넘어가세요.
+라즈베리파이 4 한 대로 지상국 Wi-Fi(GEN2-GCS), EAP225 로봇 AP, Jetson을 하나의 192.168.50.0/24 LAN으로 묶고, 안드로이드 USB 테더링이 꽂혀 있을 때만 인터넷을 공유하는 구성입니다. 이전 구성에서 위에서부터 순서대로 실행하던 런북이며, **지금은 따라 하지 않음.**
 
 Raspberry Pi OS Lite (Debian 13) kernel 6.18 rpt NetworkManager 1.52.1 dnsmasq 2.91 nftables 1.1.3 검증일 2026-10-04
 
