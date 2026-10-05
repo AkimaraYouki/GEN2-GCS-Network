@@ -1,4 +1,4 @@
-# GEN2 GCS Network
+# GCS Network
 
 로봇과 지상국 컴퓨터를 보다 안정적인 Wi-Fi로 연결하기 위해 구축한 네트워크.
 
@@ -12,7 +12,9 @@ Raspberry Pi 4는 EAP225에 이더넷으로 연결되어 `192.168.50.1`을 사�
 
 > 명령어 전체와 단계별 되돌리기는 [docs/full-setup.md](docs/full-setup.md)에 있으니, 이 페이지를 먼저 읽고 접속해서 따라하자.
 
+
 ---
+![EAP225-Outdoor & Raspberry Pi 4](images/eap225-pi4.jpg)
 
 ## 1. 구축한 구조
 
@@ -131,25 +133,4 @@ flowchart LR
 
 ## 7. 처음부터 전부 되돌리기
 
-Step 1 백업으로 돌리기. **Pi의 로컬 콘솔에서 실행할 것!** (네트워크 경로가 끊길 수 있음). 명령어는 [docs/full-setup.md](docs/full-setup.md) 맨 아래 "전체 되돌리기"에 있다.
-
-## 저장소 구성
-
-```
-GEN2-GCS-Network/
-├── README.md
-├── docs/
-│   ├── full-setup.md           # 명령어 전체 + 통과 조건 + 되돌리기 + 인터넷 공유
-│   ├── troubleshooting.md      # 증상별 확인 + 겪은 문제
-│   ├── ros2-test.md            # ROS 2 확인
-│   ├── performance.md          # 성능 측정 방법 + 기록표
-│   ├── field-test.md           # 현장 테스트 기록 양식
-│   └── archive/
-│       └── runbook.md          # 원본 형식의 한 페이지 런북
-├── scripts/
-│   ├── gcs-netcheck.sh         # Pi에서 돌리는 상태 점검
-│   └── backup-network.sh       # 바꾸기 전에 Pi 설정 백업
-├── config/
-│   └── examples/               # dnsmasq / nftables / eth0 프로필 예시
-└── images/                     # 장비 설치 사진
-```
+Step 1 백업으로 돌리기. **Pi의 로컬 콘솔에서 실행할 것!** (네트워크 경로가 끊길 수 있음). 명령어는 [docs/full-setup.md](docs/full-setup.md) 맨 아래 "전체 되돌리기"에 참고
