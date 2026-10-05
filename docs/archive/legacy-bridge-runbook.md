@@ -35,7 +35,7 @@ GEN2 · Ground Station · Raspberry Pi 4
 
 # [이전 구성] GEN2 GCS 네트워크 구축 런북 (브리지 방식)
 
-라즈베리파이 4 한 대로 지상국 Wi-Fi(GEN2-GCS), EAP225 로봇 AP, Jetson을 하나의 192.168.50.0/24 LAN으로 묶고, 안드로이드 USB 테더링이 꽂혀 있을 때만 인터넷을 공유하는 구성입니다. 이전 구성에서 위에서부터 순서대로 실행하던 런북이며, **지금은 따라 하지 않음.**
+라즈베리파이 4 한 대로 지상국 Wi-Fi(GEN2-GCS), EAP225 로봇 AP, Jetson을 하나의 192.168.50.0/24 LAN으로 묶고, 안드로이드 USB 테더링이 꽂혀 있을 때만 인터넷을 공유하는 구성임. 이전 구성에서 위에서부터 순서대로 실행하던 런북이며, **지금은 따라 하지 않음.**
 
 Raspberry Pi OS Lite (Debian 13) kernel 6.18 rpt NetworkManager 1.52.1 dnsmasq 2.91 nftables 1.1.3 검증일 2026-10-04
 
@@ -92,19 +92,19 @@ Raspberry Pi OS Lite (Debian 13) kernel 6.18 rpt NetworkManager 1.52.1 dnsmasq 2
 
 ### 설계 원칙
 
-- LAN은 L2 브리지 하나입니다. ROS 2 DDS 멀티캐스트가 wlan0와 eth0 사이를 그대로 오가고, 방화벽을 거치지 않습니다.
-- DHCP 서버는 dnsmasq 하나뿐입니다. NetworkManager의 `ipv4.method shared`는 쓰지 않습니다. 둘을 같이 쓰면 `Address already in use`로 dnsmasq가 죽습니다.
-- IPv4 주소는 `br0`만 가집니다. `wlan0`와 `eth0`는 주소 없는 브리지 포트입니다.
-- 폰이 없으면 인터넷만 끊기고, 노트북 ↔ Pi ↔ EAP ↔ Jetson 통신과 ROS 2는 그대로 동작합니다.
-- 로봇 밸런스 제어 루프는 이 네트워크를 쓰지 않습니다(Jetson 로컬 IMU + CAN). 이 망은 텔레옵, ROS 2 토픽, SLAM 시각화, SSH, 카메라 미리보기용입니다.
+- LAN은 L2 브리지 하나임. ROS 2 DDS 멀티캐스트가 wlan0와 eth0 사이를 그대로 오가고, 방화벽을 거치지 않음.
+- DHCP 서버는 dnsmasq 하나뿐임. NetworkManager의 `ipv4.method shared`는 쓰지 않음. 둘을 같이 쓰면 `Address already in use`로 dnsmasq가 죽음.
+- IPv4 주소는 `br0`만 가짐. `wlan0`와 `eth0`는 주소 없는 브리지 포트임.
+- 폰이 없으면 인터넷만 끊기고, 노트북 ↔ Pi ↔ EAP ↔ Jetson 통신과 ROS 2는 그대로 동작함.
+- 로봇 밸런스 제어 루프는 이 네트워크를 쓰지 않음(Jetson 로컬 IMU + CAN). 이 망은 텔레옵, ROS 2 토픽, SLAM 시각화, SSH, 카메라 미리보기용임.
 
-**기존 프로필은 지우지 않습니다.** 이미 설정이 일부 되어 있는 Pi라면 프로필을 삭제하지 말고 `connection.autoconnect no`로 끄세요. 되돌릴 때 그대로 다시 켜면 됩니다.
+**기존 프로필은 지우지 않음.** 이미 설정이 일부 되어 있는 Pi라면 프로필을 삭제하지 말고 `connection.autoconnect no`로 끌 것. 되돌릴 때 그대로 다시 켜면 됨.
 
 Part A · Raspberry Pi 기본 LAN
 
 ## 01현재 상태 확인 & 백업
 
-인터페이스 이름과 프로필 이름은 Pi마다 다릅니다. 짐작하지 말고 먼저 읽어보세요. 이 단계에서는 아무것도 바꾸지 않습니다.
+인터페이스 이름과 프로필 이름은 Pi마다 다름. 짐작하지 말고 먼저 읽어볼 것. 이 단계에서는 아무것도 바꾸지 않음.
 
 Pi · 상태 확인
 
@@ -137,13 +137,13 @@ sudo chown -R $USER: $B; chmod -R go-rwx $B; ls $B
 
 통과 조건
 
-각 인터페이스의 역할(어느 것이 SSH 경로인지, 폰이 `usb0`인지 `enx…`인지)을 파악했고, 백업 폴더가 생겼습니다.
+각 인터페이스의 역할(어느 것이 SSH 경로인지, 폰이 `usb0`인지 `enx…`인지)을 파악했고, 백업 폴더가 생겼음.
 
-**살펴볼 것.** `ipv4.method shared`인 프로필, 같은 장치(eth0 등)에 자동연결이 켜진 프로필 여러 개, `interface-name`이 비어 있는 ethernet 프로필(예: `netplan-eth0`, 모든 유선 장치에 매칭됨)이 있으면 메모해 두세요. 뒤 단계에서 정리합니다.
+**살펴볼 것.** `ipv4.method shared`인 프로필, 같은 장치(eth0 등)에 자동연결이 켜진 프로필 여러 개, `interface-name`이 비어 있는 ethernet 프로필(예: `netplan-eth0`, 모든 유선 장치에 매칭됨)이 있으면 메모해 둘 것. 뒤 단계에서 정리함.
 
 ## 02Wi-Fi 국가코드
 
-국가코드가 없으면 라즈베리파이 OS가 Wi-Fi를 rfkill로 막아 둡니다. AP를 띄우기 전에 한 번만 설정합니다.
+국가코드가 없으면 라즈베리파이 OS가 Wi-Fi를 rfkill로 막아 둠. AP를 띄우기 전에 한 번만 설정함.
 
 Pi
 
@@ -165,11 +165,11 @@ country KR: DFS-JP
 
 통과 조건
 
-`country KR`이고 wlan이 `unblocked`입니다.
+`country KR`이고 wlan이 `unblocked`임.
 
 ## 03br0 브리지 만들기
 
-LAN 주소 192.168.50.1은 브리지 `br0`만 가집니다. 수동 IP, 기본 경로 없음, STP 끔(포트가 붙을 때 30초 지연을 없앰).
+LAN 주소 192.168.50.1은 브리지 `br0`만 가짐. 수동 IP, 기본 경로 없음, STP 끔(포트가 붙을 때 30초 지연을 없앰).
 
 Pi · robot-br 프로필이 없을 때
 
@@ -208,7 +208,7 @@ dnsmasq 없음
 
 통과 조건
 
-192.168.50.1을 가진 인터페이스가 `br0` 하나뿐이고, NM이 띄운 dnsmasq와 `nm-shared-br0` nft 테이블이 없습니다.
+192.168.50.1을 가진 인터페이스가 `br0` 하나뿐이고, NM이 띄운 dnsmasq와 `nm-shared-br0` nft 테이블이 없음.
 
 되돌리기
 
@@ -216,9 +216,9 @@ dnsmasq 없음
 
 ## 04DHCP 서버 (dnsmasq)
 
-DHCP만 켜고 DNS는 끕니다(`port=0`). 클라이언트에게 게이트웨이로 Pi(.1)를, DNS로 공용 DNS를 줍니다. `bind-dynamic` 덕분에 부팅 때 br0가 늦게 올라와도 dnsmasq가 실패하지 않습니다.
+DHCP만 켜고 DNS는 끔(`port=0`). 클라이언트에게 게이트웨이로 Pi(.1)를, DNS로 공용 DNS를 줌. `bind-dynamic` 덕분에 부팅 때 br0가 늦게 올라와도 dnsmasq가 실패하지 않음.
 
-**인터넷 필요.** 패키지 설치 때만 필요합니다. 폰을 USB로 꽂고 USB 테더링을 켜면 Pi의 기본 프로필로 Pi 자신은 바로 인터넷이 됩니다. 설정 파일을 먼저 쓰고 설치해야 기본 설정으로 잠깐 떴다가 포트 충돌이 나는 일이 없습니다.
+**인터넷 필요.** 패키지 설치 때만 필요함. 폰을 USB로 꽂고 USB 테더링을 켜면 Pi의 기본 프로필로 Pi 자신은 바로 인터넷이 됨. 설정 파일을 먼저 쓰고 설치해야 기본 설정으로 잠깐 떴다가 포트 충돌이 나는 일이 없음.
 
 Pi · 설정 파일 작성 후 설치
 
@@ -258,17 +258,17 @@ UNCONN 0 0 0.0.0.0:67 0.0.0.0:* users:(("dnsmasq",pid=...))      # 딱 한 줄
 
 통과 조건
 
-67번 포트(DHCP)를 듣는 프로세스가 dnsmasq 하나뿐입니다.
+67번 포트(DHCP)를 듣는 프로세스가 dnsmasq 하나뿐임.
 
 되돌리기
 
 `sudo systemctl disable --now dnsmasq; sudo rm /etc/dnsmasq.d/gcs-lan.conf`
 
-**인터넷 공유를 안 할 팀이라면** 마지막 두 줄을 `dhcp-option=option:router` 한 줄로 바꾸세요. 게이트웨이를 주지 않으므로 노트북의 기본 경로가 Pi로 잡히지 않습니다. 이 경우 Step 08–09는 건너뜁니다.
+**인터넷 공유를 안 할 팀이라면** 마지막 두 줄을 `dhcp-option=option:router` 한 줄로 바꿀 것. 게이트웨이를 주지 않으므로 노트북의 기본 경로가 Pi로 잡히지 않음. 이 경우 Step 08–09는 건너뜀.
 
 ## 05GEN2-GCS Wi-Fi AP
 
-AP 프로필은 IP 설정 없이 `br0`의 포트로 붙습니다. WPA2 전용(RSN/CCMP)이며 비밀번호를 프로필에 영구 저장해야(`psk-flags 0`) 재부팅 후 자동으로 뜹니다. 저장이 안 되면 로그에 `secrets are required`가 찍히고 AP가 안 뜹니다.
+AP 프로필은 IP 설정 없이 `br0`의 포트로 붙음. WPA2 전용(RSN/CCMP)이며 비밀번호를 프로필에 영구 저장해야(`psk-flags 0`) 재부팅 후 자동으로 뜸. 저장이 안 되면 로그에 `secrets are required`가 찍히고 AP가 안 뜸.
 
 Pi · GEN2-GCS 프로필이 없을 때
 
@@ -317,19 +317,19 @@ ssh <pi-user>@192.168.50.1
 
 통과 조건
 
-노트북이 192.168.50.100–200 주소를 받고, ping과 SSH가 됩니다. Pi에서 `cat /var/lib/misc/dnsmasq.leases`에 노트북이 보입니다.
+노트북이 192.168.50.100–200 주소를 받고, ping과 SSH가 됨. Pi에서 `cat /var/lib/misc/dnsmasq.leases`에 노트북이 보임.
 
 되돌리기
 
 `sudo nmcli connection down GEN2-GCS`
 
-**비밀번호는 채팅이나 공유 문서에 붙여넣지 마세요.** 위의 `read -s` 방식으로 Pi 터미널에서 직접 입력합니다. macOS는 이 단계에서 "인터넷 연결 없음"으로 보일 수 있으며 정상입니다(Step 09 이후 해결).
+**비밀번호는 채팅이나 공유 문서에 붙여넣지 말 것.** 위의 `read -s` 방식으로 Pi 터미널에서 직접 입력함. macOS는 이 단계에서 "인터넷 연결 없음"으로 보일 수 있으며 정상임(Step 09 이후 해결).
 
 ## 06eth0를 브리지에 넣기
 
-EAP225가 연결된 `eth0`를 `br0`의 두 번째 포트로 붙입니다. 같은 eth0에 자동연결이 켜진 다른 프로필이 있으면 부팅 때 서로 다투므로, 기존 것은 자동연결을 끄고 브리지 포트 프로필의 우선순위를 높입니다.
+EAP225가 연결된 `eth0`를 `br0`의 두 번째 포트로 붙임. 같은 eth0에 자동연결이 켜진 다른 프로필이 있으면 부팅 때 서로 다투므로, 기존 것은 자동연결을 끄고 브리지 포트 프로필의 우선순위를 높임.
 
-**SSH 경로 확인.** 지금 SSH가 eth0로 들어와 있다면 이 단계에서 끊길 수 있습니다. 로컬 콘솔이나 GEN2-GCS(wlan0) 경로로 접속한 상태에서 진행하세요. wlan0와 eth0를 동시에 내리지 마세요.
+**SSH 경로 확인.** 지금 SSH가 eth0로 들어와 있다면 이 단계에서 끊길 수 있음. 로컬 콘솔이나 GEN2-GCS(wlan0) 경로로 접속한 상태에서 진행할 것. wlan0와 eth0를 동시에 내리지 말 것.
 
 Pi · eth0에 걸린 프로필 확인
 
@@ -376,17 +376,17 @@ wlan0          wifi      connected   GEN2-GCS
 
 통과 조건
 
-두 포트 모두 `forwarding`이고, 노트북에서 192.168.50.1 ping이 계속 됩니다. 확인되면 3분 안에 타이머를 취소합니다: `sudo systemctl stop eth0-rollback.timer`
+두 포트 모두 `forwarding`이고, 노트북에서 192.168.50.1 ping이 계속 됨. 확인되면 3분 안에 타이머를 취소함: `sudo systemctl stop eth0-rollback.timer`
 
 되돌리기
 
-타이머를 취소하지 않으면 3분 뒤 이전 프로필로 자동 복귀합니다.
+타이머를 취소하지 않으면 3분 뒤 이전 프로필로 자동 복귀함.
 
-**EAP의 주소가 바뀝니다.** EAP225가 DHCP 모드(공장 기본)라면 eth0가 브리지에 붙는 순간 dnsmasq에서 .100–.200 중 하나를 받아 갑니다. 이전 기본 주소 192.168.0.254로는 더 이상 접속되지 않습니다. 다음 단계에서 찾습니다.
+**EAP의 주소가 바뀜.** EAP225가 DHCP 모드(공장 기본)라면 eth0가 브리지에 붙는 순간 dnsmasq에서 .100–.200 중 하나를 받아 감. 이전 기본 주소 192.168.0.254로는 더 이상 접속되지 않음. 다음 단계에서 찾음.
 
 ## 07EAP225-Outdoor 설정
 
-EAP는 AP 역할만 합니다(DHCP, NAT 없음). 관리 주소를 192.168.50.2로 고정하고, 혹시 고정 설정이 풀려도 같은 주소를 받도록 dnsmasq에 MAC 예약을 겁니다.
+EAP는 AP 역할만 함(DHCP, NAT 없음). 관리 주소를 192.168.50.2로 고정하고, 혹시 고정 설정이 풀려도 같은 주소를 받도록 dnsmasq에 MAC 예약을 걸어 둠.
 
 Pi · EAP 찾기
 
@@ -412,7 +412,7 @@ sudo dnsmasq --test -C /dev/null -7 /etc/dnsmasq.d && sudo systemctl restart dns
 
 ### EAP 웹 UI
 
-노트북 브라우저에서 `https://<leases에 보인 주소>`로 접속합니다(같은 서브넷이라 바로 됩니다).
+노트북 브라우저에서 `https://<leases에 보인 주소>`로 접속함(같은 서브넷이라 바로 됨).
 
 | 항목 | 값 |
 | --- | --- |
@@ -424,7 +424,7 @@ sudo dnsmasq --test -C /dev/null -7 /etc/dnsmasq.d && sudo systemctl restart dns
 | VLAN / Management VLAN | OFF |
 | 멀티캐스트 필터 계열 옵션 | 있다면 OFF (ROS 2 디스커버리가 멀티캐스트를 씀) |
 
-**EAP가 192.168.0.254에 남아 있다면** (고정 IP로 설정돼 있던 경우) Pi에 임시 주소를 붙여 접속합니다. 이 주소는 재부팅하면 사라집니다. \
+**EAP가 192.168.0.254에 남아 있다면** (고정 IP로 설정돼 있던 경우) Pi에 임시 주소를 붙여 접속함. 이 주소는 재부팅하면 사라짐. \
 `sudo ip addr add 192.168.0.10/24 dev br0` → 노트북에서 `ssh -L 8443:192.168.0.254:443 <pi-user>@192.168.50.1` → 브라우저 `https://localhost:8443` → 설정 후 `sudo ip addr del 192.168.0.10/24 dev br0`
 
 Pi / 노트북 · 확인
@@ -435,17 +435,17 @@ ping -c 3 192.168.50.2
 
 통과 조건
 
-Pi와 노트북 둘 다에서 192.168.50.2가 응답하고, EAP UI에서 GEN2-ROBOT이 송출 중입니다.
+Pi와 노트북 둘 다에서 192.168.50.2가 응답하고, EAP UI에서 GEN2-ROBOT이 송출 중임.
 
 되돌리기
 
-EAP 리셋 버튼으로 공장 초기화하면 DHCP 모드로 돌아가 dnsmasq에서 다시 주소를 받습니다(예약이 있으면 .2).
+EAP 리셋 버튼으로 공장 초기화하면 DHCP 모드로 돌아가 dnsmasq에서 다시 주소를 받음(예약이 있으면 .2).
 
 Part B · 인터넷 공유 (폰 USB 테더링)
 
 ## 08USB 테더링 WAN 프로필
 
-라즈베리파이 OS가 만든 `netplan-eth0`는 이름과 달리 `interface-name`이 비어 있어 **모든 유선 장치**에 매칭됩니다. 폰을 잡아 주기는 하지만, 부팅 순서에 따라 eth0를 가로채 DHCP 클라이언트로 만들 수 있습니다. `usb*`/`enx*`에만 붙는 전용 프로필로 바꿉니다.
+라즈베리파이 OS가 만든 `netplan-eth0`는 이름과 달리 `interface-name`이 비어 있어 **모든 유선 장치**에 매칭됨. 폰을 잡아 주기는 하지만, 부팅 순서에 따라 eth0를 가로채 DHCP 클라이언트로 만들 수 있음. `usb*`/`enx*`에만 붙는 전용 프로필로 바꿈.
 
 Pi · 폰 꽂고 USB 테더링 켠 뒤 이름 확인
 
@@ -483,7 +483,7 @@ default via 192.168.139.55 dev usb0 proto dhcp src 192.168.139.166 metric 100
 
 통과 조건
 
-기본 경로가 테더링 인터페이스 하나뿐이고 `br0`에는 기본 경로가 없습니다. 폰을 뽑았다 다시 꽂으면 `wan-tether`로 자동 연결됩니다.
+기본 경로가 테더링 인터페이스 하나뿐이고 `br0`에는 기본 경로가 없음. 폰을 뽑았다 다시 꽂으면 `wan-tether`로 자동 연결됨.
 
 되돌리기
 
@@ -491,7 +491,7 @@ default via 192.168.139.55 dev usb0 proto dhcp src 192.168.139.166 metric 100
 
 ## 09NAT & IPv4 포워딩
 
-br0에서 테더링으로 나가는 트래픽만 마스커레이드합니다. 응답 트래픽은 허용하고, 폰 쪽에서 LAN으로 새로 들어오는 연결은 막습니다. 브리지 안의 L2 트래픽(ROS 2 멀티캐스트 포함)은 이 규칙을 거치지 않습니다.
+br0에서 테더링으로 나가는 트래픽만 마스커레이드함. 응답 트래픽은 허용하고, 폰 쪽에서 LAN으로 새로 들어오는 연결은 막음. 브리지 안의 L2 트래픽(ROS 2 멀티캐스트 포함)은 이 규칙을 거치지 않음.
 
 Pi · 포워딩 영구 설정
 
@@ -558,7 +558,7 @@ curl -sI https://www.google.com | head -1
 
 통과 조건
 
-노트북에서 인터넷이 되고, 폰을 뽑아도 192.168.50.x끼리는 계속 통신됩니다.
+노트북에서 인터넷이 되고, 폰을 뽑아도 192.168.50.x끼리는 계속 통신됨.
 
 되돌리기
 
@@ -568,7 +568,7 @@ Part C · 로봇 & 검증
 
 ## 10Jetson Orin Nano 설정
 
-Jetson은 GEN2-ROBOT에 고정 IP로 붙습니다. Wi-Fi 절전을 끄면 RTT가 수십\~수백 ms씩 튀는 현상(절전 모드 특유의 지터)이 사라집니다. Orin Nano의 Wi-Fi 이름은 `wlan0`가 아니라 `wlP1p1s0` 같은 형태일 수 있으니 먼저 확인합니다.
+Jetson은 GEN2-ROBOT에 고정 IP로 붙음. Wi-Fi 절전을 끄면 RTT가 수십\~수백 ms씩 튀는 현상(절전 모드 특유의 지터)이 사라짐. Orin Nano의 Wi-Fi 이름은 `wlan0`가 아니라 `wlP1p1s0` 같은 형태일 수 있으니 먼저 확인함.
 
 Jetson · 인터페이스 확인
 
@@ -601,7 +601,7 @@ ssh <jetson-user>@192.168.50.10
 
 통과 조건
 
-노트북에서 .1, .2, .10 모두 응답하고, 폰 테더링이 꽂혀 있으면 Jetson에서 `ping 8.8.8.8`도 됩니다.
+노트북에서 .1, .2, .10 모두 응답하고, 폰 테더링이 꽂혀 있으면 Jetson에서 `ping 8.8.8.8`도 됨.
 
 되돌리기
 
@@ -609,7 +609,7 @@ ssh <jetson-user>@192.168.50.10
 
 ## 11점검 스크립트 설치
 
-읽기 전용 점검 스크립트입니다. 부팅 후, 폰을 꽂고 뺀 뒤, 현장 투입 전에 한 번씩 돌립니다. 종료 코드가 FAIL 개수입니다.
+읽기 전용 점검 스크립트임. 부팅 후, 폰을 꽂고 뺀 뒤, 현장 투입 전에 한 번씩 돌림. 종료 코드가 FAIL 개수임.
 
 Pi · \~/gcs-netcheck.sh 설치
 
@@ -690,11 +690,11 @@ ALL OK
 
 통과 조건
 
-마지막 줄이 `ALL OK`입니다. WARN은 실패가 아니라 아직 안 끝난 항목입니다.
+마지막 줄이 `ALL OK`임. WARN은 실패가 아니라 아직 안 끝난 항목임.
 
 ## 12재부팅 & 핫플러그 검증
 
-부팅 순서는 br0 → GEN2-GCS AP → eth0 포트 → dnsmasq → (폰이 있으면) wan-tether DHCP → 기본 경로 → NAT 순으로 자동 복구되어야 합니다.
+부팅 순서는 br0 → GEN2-GCS AP → eth0 포트 → dnsmasq → (폰이 있으면) wan-tether DHCP → 기본 경로 → NAT 순으로 자동 복구되어야 함.
 
 Pi
 
@@ -706,21 +706,21 @@ sudo reboot
 
 ### 추가 시나리오
 
-- **폰 없이 부팅**: LAN 항목 모두 PASS, 인터넷 항목은 "LAN-only mode" WARN만 나와야 합니다.
-- **부팅 후 폰 연결**: USB 테더링을 켜고 10초 뒤 다시 실행하면 `default route via tether`가 PASS여야 합니다.
-- **폰 분리**: 노트북 ↔ Jetson ping과 ROS 2 토픽이 끊기지 않아야 합니다.
+- **폰 없이 부팅**: LAN 항목 모두 PASS, 인터넷 항목은 "LAN-only mode" WARN만 나와야 함.
+- **부팅 후 폰 연결**: USB 테더링을 켜고 10초 뒤 다시 실행하면 `default route via tether`가 PASS여야 함.
+- **폰 분리**: 노트북 ↔ Jetson ping과 ROS 2 토픽이 끊기지 않아야 함.
 
 통과 조건
 
-재부팅 후 손대지 않은 상태에서 `ALL OK`가 나옵니다.
+재부팅 후 손대지 않은 상태에서 `ALL OK`가 나옴.
 
 안 될 때
 
-아래 [문제 해결](#trouble) 표에서 해당 증상을 찾고, `sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80`을 확인합니다.
+아래 [문제 해결](#trouble) 표에서 해당 증상을 찾고, `sudo journalctl -b -u NetworkManager -u dnsmasq --no-pager | tail -80`을 확인함.
 
 ## 13ROS 2 멀티캐스트 디스커버리
 
-유니캐스트 피어를 수동으로 지정하지 않고도 토픽이 보여야 합니다. 양쪽 모두 `ROS_LOCALHOST_ONLY`가 꺼져 있어야 합니다.
+유니캐스트 피어를 수동으로 지정하지 않고도 토픽이 보여야 함. 양쪽 모두 `ROS_LOCALHOST_ONLY`가 꺼져 있어야 함.
 
 Jetson
 
@@ -749,15 +749,15 @@ data: hello
 
 통과 조건
 
-폰을 뽑은 상태에서도 메시지가 계속 보입니다.
+폰을 뽑은 상태에서도 메시지가 계속 보임.
 
 안 될 때
 
-노트북 방화벽(macOS 방화벽, ufw)이 UDP 7400번대를 막는지, EAP의 Client Isolation과 멀티캐스트 필터가 꺼져 있는지 확인합니다.
+노트북 방화벽(macOS 방화벽, ufw)이 UDP 7400번대를 막는지, EAP의 Client Isolation과 멀티캐스트 필터가 꺼져 있는지 확인함.
 
 ## 14성능 측정
 
-세 구간을 측정해 기록합니다. Pi에는 iperf3가 기본으로 없으니 폰 테더링이 연결된 상태에서 설치합니다.
+세 구간을 측정해 기록함. Pi에는 iperf3가 기본으로 없으니 폰 테더링이 연결된 상태에서 설치함.
 
 설치 (Pi, Jetson 각각)
 
@@ -789,11 +789,11 @@ iperf3 -c 192.168.50.10 -u -b 20M -t 10    # UDP: Jitter, Lost/Total 확인
 | Pi ↔ Jetson | — | — | — | — | — | — |
 | 노트북 ↔ Jetson | — | — | — | — | — | — |
 
-참고로 구축 당시 Pi ↔ EAP(유선)는 0.2–0.6 ms였습니다. 무선 클라이언트에서 max RTT가 100 ms를 넘게 튀면 대부분 클라이언트 Wi-Fi 절전 때문입니다.
+참고로 구축 당시 Pi ↔ EAP(유선)는 0.2–0.6 ms였음. 무선 클라이언트에서 max RTT가 100 ms를 넘게 튀면 대부분 클라이언트 Wi-Fi 절전 때문임.
 
 ## 문제 해결
 
-이번 구축 중 실제로 겪은 증상들입니다.
+이번 구축 중 실제로 겪은 증상들임.
 
 | 증상 | 원인 | 해결 |
 | --- | --- | --- |
@@ -808,7 +808,7 @@ iperf3 -c 192.168.50.10 -u -b 20M -t 10    # UDP: Jitter, Lost/Total 확인
 
 ## 전체 되돌리기
 
-Step 01 백업으로 원래 상태로 돌립니다. 새로 만든 프로필은 이름으로 지웁니다. 로컬 콘솔에서 실행하세요(Wi-Fi 경로가 끊길 수 있음).
+Step 01 백업으로 원래 상태로 돌림. 새로 만든 프로필은 이름으로 지움. 로컬 콘솔에서 실행할 것(Wi-Fi 경로가 끊길 수 있음).
 
 Pi
 
