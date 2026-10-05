@@ -18,7 +18,7 @@ flowchart TD
 
 명령어 앞에 `Pi:`, `노트북:`, `Jetson:`이 붙어 있으면 그 장비에서 실행하는 겁니다.
 
-> **이 문서의 명령어에 대해.** Wi-Fi/EAP/Jetson/dnsmasq/백업/점검 스크립트 명령은 이전 구성에서 검증한 런북([archive](archive/legacy-bridge-runbook.md))을 기준으로 했습니다. `eth0`에 IP를 직접 주는 프로필(Step 2)과 nftables의 LAN 쪽 인터페이스(`eth0`)는 새 구성에 맞게 바꾼 부분입니다. 바꾼 곳에는 그렇게 적었습니다. 새 구성의 실측 결과는 아직 기록하지 않았습니다.
+> **이 문서의 명령어에 대해.** Wi-Fi/EAP/Jetson/dnsmasq/백업/점검 스크립트 명령은 이전 구성(브리지 방식)에서 검증한 런북을 기준으로 했습니다. (그 런북은 git 히스토리에만 남아 있고, 확인 방법은 [archive/runbook.md](archive/runbook.md) 맨 아래에 있습니다.) `eth0`에 IP를 직접 주는 프로필(Step 2)과 nftables의 LAN 쪽 인터페이스(`eth0`)는 새 구성에 맞게 바꾼 부분입니다. 바꾼 곳에는 그렇게 적었습니다. 새 구성의 실측 결과는 아직 기록하지 않았습니다.
 
 ---
 

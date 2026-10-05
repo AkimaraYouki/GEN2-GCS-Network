@@ -142,7 +142,7 @@ GEN2-GCS-Network/
 │   ├── performance.md          # 성능 측정 방법 + 기록표
 │   ├── field-test.md           # 현장 테스트 기록 양식
 │   └── archive/
-│       └── legacy-bridge-runbook.md   # 사용하지 않는 이전 구성
+│       └── runbook.md          # 원본 형식의 한 페이지 런북
 ├── scripts/
 │   ├── gcs-netcheck.sh         # Pi에서 돌리는 상태 점검
 │   └── backup-network.sh       # 바꾸기 전에 Pi 설정 백업

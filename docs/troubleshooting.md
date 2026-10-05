@@ -96,4 +96,4 @@ Pi가 `GEN2-GCS` Wi-Fi AP를 만들고 `wlan0`와 `eth0`를 `br0`로 브리지�
 | `GEN2-GCS`가 안 뜸. 로그에 `secrets are required` / `no-secrets` | 프로필에 `psk=`가 저장되지 않음 | `read -s`로 비밀번호와 `psk-flags 0` 저장 |
 | `br0`가 `DOWN` | 포트가 없을 때는 정상 | 브리지 포트가 붙으면 UP |
 
-자세한 내용은 [archive/legacy-bridge-runbook.md](archive/legacy-bridge-runbook.md)에 있습니다.
+이전 구성의 런북은 git 히스토리에만 남아 있습니다. 확인 방법은 [archive/runbook.md](archive/runbook.md) 맨 아래에 있습니다.
